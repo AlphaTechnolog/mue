@@ -23,8 +23,6 @@ type WinCnf = {
   dimensions: Vec2d;
 };
 
-declare const KeyboardKey: Record<string, number>;
-
 declare const graphics: {
   drawRectangle(pos: Vec2d, size: Vec2d, color: Color): void;
   drawText(text: string, pos: Vec2d, size: number, color: Color): void;
