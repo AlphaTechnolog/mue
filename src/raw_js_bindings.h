@@ -4,24 +4,24 @@ static const char *console_js =
 
 static const char *graphics_js =
     "var graphics = {\n"
-        "drawRectangle: Hate_Graphics_DrawRectangle,\n"
-        "drawText: Hate_Graphics_DrawText,\n"
-        "measureText: Hate_Graphics_MeasureText,\n"
+        "drawRectangle: Mue_Graphics_DrawRectangle,\n"
+        "drawText: Mue_Graphics_DrawText,\n"
+        "measureText: Mue_Graphics_MeasureText,\n"
     "};\n"
 ;
 
 static const char *input_js =
     "var input = {\n"
-        "isKeyPressed: Hate_Input_IsKeyPressed,\n"
-        "isKeyDown: Hate_Input_IsKeyDown,\n"
-        "isKeyUp: Hate_Input_IsKeyUp\n"
+        "isKeyPressed: Mue_Input_IsKeyPressed,\n"
+        "isKeyDown: Mue_Input_IsKeyDown,\n"
+        "isKeyUp: Mue_Input_IsKeyUp\n"
     "};\n"
 ;
 
 static const char *collision_js =
     "var collision = {\n"
-        "checkRecs: Hate_Collision_CheckRecs,\n"
-        "getCollisionRec: Hate_Collision_GetCollisionRec\n"
+        "checkRecs: Mue_Collision_CheckRecs,\n"
+        "getCollisionRec: Mue_Collision_GetCollisionRec\n"
     "};\n"
 ;
 

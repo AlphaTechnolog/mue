@@ -285,14 +285,14 @@ void global_functions(js_State *J)
 {
     EXPOSE(print, "print");
     EXPOSE(jsread, "read");
-    EXPOSE(graphics_draw_rectangle, "Hate_Graphics_DrawRectangle");
-    EXPOSE(input_is_keypressed, "Hate_Input_IsKeyPressed");
-    EXPOSE(input_is_keydown, "Hate_Input_IsKeyDown");
-    EXPOSE(input_is_keyup, "Hate_Input_IsKeyUp");
-    EXPOSE(collision_check_recs, "Hate_Collision_CheckRecs");
-    EXPOSE(collision_get_collision_rec, "Hate_Collision_GetCollisionRec");
-    EXPOSE(graphics_draw_text, "Hate_Graphics_DrawText");
-    EXPOSE(graphics_measure_text, "Hate_Graphics_MeasureText");
+    EXPOSE(graphics_draw_rectangle, "Mue_Graphics_DrawRectangle");
+    EXPOSE(input_is_keypressed, "Mue_Input_IsKeyPressed");
+    EXPOSE(input_is_keydown, "Mue_Input_IsKeyDown");
+    EXPOSE(input_is_keyup, "Mue_Input_IsKeyUp");
+    EXPOSE(collision_check_recs, "Mue_Collision_CheckRecs");
+    EXPOSE(collision_get_collision_rec, "Mue_Collision_GetCollisionRec");
+    EXPOSE(graphics_draw_text, "Mue_Graphics_DrawText");
+    EXPOSE(graphics_measure_text, "Mue_Graphics_MeasureText");
     js_dostring(J, console_js);
     js_dostring(J, stacktrace_js);
     js_dostring(J, require_js);

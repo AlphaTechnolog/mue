@@ -1,4 +1,5 @@
-hate2d
+mue
 node_modules
 *.js
+*.o
 .cache

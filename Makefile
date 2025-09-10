@@ -9,7 +9,7 @@ LDFLAGS   := -L$(LIBDIR) -lmujs -lraylib -Wl,-rpath,$(RPATH)
 
 SRCS      := $(shell find ./src -type f -name '*.c')
 OBJS      := $(SRCS:.c=.o)
-TARGET    := hate2d
+TARGET    := mue
 
 .PHONY: all clean run
 all: $(TARGET)

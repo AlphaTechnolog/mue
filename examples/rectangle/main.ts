@@ -5,5 +5,5 @@ const white = color(255, 255, 255, 255);
 const setup = (cnf: WinCnf): WinCnf => ({ ...cnf, title: "My game" });
 
 const draw = () => {
-  graphics.drawRectangle(vec(0, 4), vec(40, 40), white);
+  graphics.drawRectangle(vec(0, 0), vec(40, 40), white);
 }
