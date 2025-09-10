@@ -1,0 +1,17 @@
+[
+ {
+  "directory": "/Users/alpha/work/hate2d",
+  "arguments": [
+   "cc",
+   "-c",
+   "-o",
+   "src/main.o",
+   "src/main.c",
+   "-Iinclude",
+   "-Wall",
+   "-Werror",
+   "-O3"
+  ],
+  "file": "src/main.c"
+ }
+]
