@@ -35,11 +35,11 @@ interface Entity extends Renderable {
 
 class GameOverSplash implements Renderable {
   constructor(
-      private show = false,
-      private pos = vec(0, 0),
-      private text = "Game Over",
-      private fontSize = 42,
-      private fgColor = color(255, 255, 255, 255),
+    private show = false,
+    private pos = vec(0, 0),
+    private text = "Game Over",
+    private fontSize = 42,
+    private fgColor = color(255, 255, 255, 255),
   ) {}
 
   private updatePos() {
