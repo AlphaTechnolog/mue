@@ -38,17 +38,16 @@
         js_setglobal(J, (fnname)); \
     } while (0);
 
-void *jsallocator(void *memctx, void *ptr, int size)
+void *js_allocator(void *_, void *ptr, const int size)
 {
     if (size > 0) {
         return realloc(ptr, size);
-    } else {
-        free(ptr);
-        return NULL;
     }
+    free(ptr);
+    return NULL;
 }
 
-void jspanic(js_State *J)
+void js_panic(js_State *J)
 {
     const char *errmsg = "(unknown error)";
     if (js_isstring(J, -1)) {
@@ -58,7 +57,7 @@ void jspanic(js_State *J)
     fprintf(stderr, "fatal: %s\n", errmsg); js_freestate(J); exit(1);
 }
 
-void color_fetch_fromstack(Color *c, js_State *J, int obj_idx)
+void color_fetch_from_stack(Color *c, js_State *J, int obj_idx)
 {
     CONSUME_OBJ_PROP(c, obj_idx, r, (unsigned char)js_tonumber);
     CONSUME_OBJ_PROP(c, obj_idx, g, (unsigned char)js_tonumber);
@@ -77,7 +76,7 @@ void vec2d_init(Vec2d *v, double x, double y)
     v->y = y;
 }
 
-void vec2d_push_ontostack(Vec2d *v, js_State *J)
+void vec2d_push_onto_stack(const Vec2d *v, js_State *J)
 {
     js_newobject(J);
     {
@@ -88,7 +87,7 @@ void vec2d_push_ontostack(Vec2d *v, js_State *J)
     }
 }
 
-void vec2d_fetch_fromstack(Vec2d *v, js_State *J, int obj_idx)
+void vec2d_fetch_from_stack(Vec2d *v, js_State *J, const int obj_idx)
 {
     CONSUME_OBJ_PROP(v, obj_idx, x, js_tonumber);
     CONSUME_OBJ_PROP(v, obj_idx, y, js_tonumber);
@@ -97,7 +96,8 @@ void vec2d_fetch_fromstack(Vec2d *v, js_State *J, int obj_idx)
 // print(...: any[]): void;
 void print(js_State *J)
 {
-    int i = 1, top = js_gettop(J);
+    int i = 1;
+    const int top = js_gettop(J);
     while (i < top) {
         const char *s = js_tostring(J, i);
         if (i++ > 1) putchar(' ');
@@ -108,7 +108,7 @@ void print(js_State *J)
 }
 
 // read(filename: string): string;
-void jsread(js_State *J)
+void js_read(js_State *J)
 {
     CHECK_ARGTYPE(1, string);
 
@@ -123,7 +123,7 @@ void jsread(js_State *J)
         js_error(J, "cannot seek in file '%s': %s\n", filename, strerror(errno));
     }
 
-    int n = ftell(f);
+    const long n = ftell(f);
     if (n < 0) {
         fclose(f);
         js_error(J, "cannot tell in file '%s': %s\n", filename, strerror(errno));
@@ -140,7 +140,7 @@ void jsread(js_State *J)
         js_error(J, "out of memory");
     }
 
-    int t = fread(s, 1, n, f);
+    const unsigned long t = fread(s, 1, n, f);
     if (t != n) {
         free(s);
         fclose(f);
@@ -161,20 +161,20 @@ void graphics_draw_rectangle(js_State *J)
     }
 
     Vec2d pos = {0};
-    vec2d_fetch_fromstack(&pos, J, 1);
+    vec2d_fetch_from_stack(&pos, J, 1);
 
     Vec2d size = {0};
-    vec2d_fetch_fromstack(&size, J, 2);
+    vec2d_fetch_from_stack(&size, J, 2);
 
     Color color = {0};
-    color_fetch_fromstack(&color, J, 3);
+    color_fetch_from_stack(&color, J, 3);
 
-    DrawRectangle(pos.x, pos.y, size.x, size.y, color);
+    DrawRectangle((int)pos.x, (int)pos.y, (int)size.x, (int)size.y, color);
     js_pushundefined(J);
 }
 
 // input.isKeyPressed(key: number): boolean;
-void input_is_keypressed(js_State *J)
+void input_is_key_pressed(js_State *J)
 {
     CHECK_ARGTYPE(1, number);
     js_pushboolean(J, IsKeyPressed((int)js_tonumber(J, 1)));
@@ -194,7 +194,7 @@ void input_is_keyup(js_State *J)
     js_pushboolean(J, IsKeyUp((int)js_tonumber(J, 1)));
 }
 
-void rectangle_fetch_fromstack(Rectangle *r, js_State *J, int idx)
+void rectangle_fetch_from_stack(Rectangle *r, js_State *J, const int idx)
 {
     CONSUME_OBJ_PROP(r, idx, x, (float)js_tonumber);
     CONSUME_OBJ_PROP(r, idx, y, (float)js_tonumber);
@@ -202,17 +202,17 @@ void rectangle_fetch_fromstack(Rectangle *r, js_State *J, int idx)
     CONSUME_OBJ_PROP(r, idx, height, (float)js_tonumber);
 }
 
-void rectangle_push_ontostack(Rectangle *r, js_State *J)
+void rectangle_push_onto_stack(const Rectangle *r, js_State *J)
 {
     js_newobject(J);
     {
-        js_pushnumber(J, (double)r->x);
+        js_pushnumber(J, r->x);
         js_setproperty(J, -2, "x");
-        js_pushnumber(J, (double)r->y);
+        js_pushnumber(J, r->y);
         js_setproperty(J, -2, "y");
-        js_pushnumber(J, (double)r->width);
+        js_pushnumber(J, r->width);
         js_setproperty(J, -2, "width");
-        js_pushnumber(J, (double)r->height);
+        js_pushnumber(J, r->height);
         js_setproperty(J, -2, "height");
     }
 }
@@ -226,8 +226,8 @@ void collision_check_recs(js_State *J)
     Rectangle a = {0},
               b = {0};
 
-    rectangle_fetch_fromstack(&a, J, 1);
-    rectangle_fetch_fromstack(&b, J, 2);
+    rectangle_fetch_from_stack(&a, J, 1);
+    rectangle_fetch_from_stack(&b, J, 2);
 
     js_pushboolean(J, CheckCollisionRecs(a, b));
 }
@@ -241,16 +241,16 @@ void collision_get_collision_rec(js_State *J)
     Rectangle a = {0},
               b = {0};
 
-    rectangle_fetch_fromstack(&a, J, 1);
-    rectangle_fetch_fromstack(&b, J, 2);
+    rectangle_fetch_from_stack(&a, J, 1);
+    rectangle_fetch_from_stack(&b, J, 2);
 
     if (!CheckCollisionRecs(a, b)) {
         js_pushnull(J);
         return;
     }
 
-    Rectangle res = GetCollisionRec(a, b);
-    rectangle_push_ontostack(&res, J);
+    const Rectangle res = GetCollisionRec(a, b);
+    rectangle_push_onto_stack(&res, J);
 }
 
 // graphics.drawText(text: string, pos: Vec2d, size: number, color: Color): void;
@@ -264,9 +264,9 @@ void graphics_draw_text(js_State *J)
     Vec2d pos = {0};
     Color color = {0};
     const char *text = js_tostring(J, 1);
-    vec2d_fetch_fromstack(&pos, J, 2);
+    vec2d_fetch_from_stack(&pos, J, 2);
     double size = js_tonumber(J, 3);
-    color_fetch_fromstack(&color, J, 4);
+    color_fetch_from_stack(&color, J, 4);
 
     DrawText(text, (int)pos.x, (int)pos.y, (int)size, color);
 
@@ -290,9 +290,9 @@ void get_time(js_State *J)
 void global_functions(js_State *J)
 {
     EXPOSE(print, "print");
-    EXPOSE(jsread, "read");
+    EXPOSE(js_read, "read");
     EXPOSE(graphics_draw_rectangle, "Mue_Graphics_DrawRectangle");
-    EXPOSE(input_is_keypressed, "Mue_Input_IsKeyPressed");
+    EXPOSE(input_is_key_pressed, "Mue_Input_IsKeyPressed");
     EXPOSE(input_is_keydown, "Mue_Input_IsKeyDown");
     EXPOSE(input_is_keyup, "Mue_Input_IsKeyUp");
     EXPOSE(collision_check_recs, "Mue_Collision_CheckRecs");
@@ -332,7 +332,7 @@ void win_config_push_ontostack(WinConfig *cnf, js_State *J)
         js_setproperty(J, -2, "title");
         js_pushnumber(J, (double)cnf->target_fps);
         js_setproperty(J, -2, "targetFps");
-        vec2d_push_ontostack(&cnf->dimensions, J);
+        vec2d_push_onto_stack(&cnf->dimensions, J);
         js_setproperty(J, -2, "dimensions");
     }
 }
@@ -348,10 +348,8 @@ void win_config_fetch_fromstack(WinConfig *cnf, js_State *J, int idx)
     js_getproperty(J, -1, "dimensions");
     if (!js_isobject(J, -1)) {
         js_typeerror(J, "dimensions is not an object");
-        js_freestate(J);
-        exit(1);
     }
-    vec2d_fetch_fromstack(&cnf->dimensions, J, -1);
+    vec2d_fetch_from_stack(&cnf->dimensions, J, -1);
     js_pop(J, 1);
 }
 
@@ -378,8 +376,6 @@ void win_config_from_setup(WinConfig *cnf, js_State *J)
     // the returned value should be an object with the same properties.
     if (!js_isobject(J, -1)) {
         js_typeerror(J, "return variable is not an object");
-        js_freestate(J);
-        exit(1);
     }
 
     win_config_fetch_fromstack(cnf, J, -1);
@@ -399,7 +395,7 @@ void setup(js_State *J)
 
     win_config_from_setup(&config, J);
 
-    InitWindow(config.dimensions.x, config.dimensions.y, config.title);
+    InitWindow((int)config.dimensions.x, (int)config.dimensions.y, config.title);
     SetTargetFPS(config.target_fps);
 }
 
@@ -470,21 +466,21 @@ void cleanup(js_State *J)
     CloseWindow();
 }
 
-int main(int argc, char *argv[])
+int main(const int argc, char *argv[])
 {
-    char *pathname = ".";
+    const char *pathname = ".";
     if (argc > 1) {
         pathname = argv[1];
     }
     chdir(pathname);
 
-    js_State *J;
-    if (!(J = js_newstate(jsallocator, NULL, 0))) {
-        fprintf(stderr, "unable to initialise mujs runtime\n");
+    js_State *J = js_newstate(js_allocator, NULL, 0);
+    if (!J) {
+        fprintf(stderr, "unable to initialise mu js runtime\n");
         return 1;
     }
 
-    js_atpanic(J, jspanic);
+    js_atpanic(J, js_panic);
     if (js_try(J)) {
         fprintf(stderr, "%s\n", js_tostring(J, -1));
         js_freestate(J);
