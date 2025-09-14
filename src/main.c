@@ -265,7 +265,7 @@ void graphics_draw_text(js_State *J)
     Color color = {0};
     const char *text = js_tostring(J, 1);
     vec2d_fetch_from_stack(&pos, J, 2);
-    double size = js_tonumber(J, 3);
+    const double size = js_tonumber(J, 3);
     color_fetch_from_stack(&color, J, 4);
 
     DrawText(text, (int)pos.x, (int)pos.y, (int)size, color);
