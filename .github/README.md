@@ -12,13 +12,13 @@ functions for like graphics, text, input handling, and pretty much that's it.
 The source code is almost entirely in a single [main.c](../src/main.c) file, but there's also
 some examples in the [examples](../examples) folder which also shows usage of typescript.
 
-![demonstration](./assets/pong.jpeg)
+![demonstration](./assets/pong.png)
 
 ## Getting started
 
 > [!NOTE]
 > This project really is no production ready and is also not intended to be whatsoever (at least for now i do think so)
-> but feel free to fork and add more features if you want to, i just wanted to have some fun and pretty much did.
+> but feel free to fork and add more features if you want to, I just wanted to have some fun and pretty much did.
 
 ```sh
 git clone https://github.com/AlphaTechnolog/mue.git
@@ -35,7 +35,7 @@ Then make sure you have the next dependencies installed in your system.
 make
 ```
 
-> [!TODO]
+> [!NOTE]
 > Add support for linux build since im building right now on a mac, but you should be able to suit
 > the [lib](../lib) folder with the appropiate `.so` files, and maybe modify a little bit the [Makefile](../Makefile)
 > for cflags/ldflags.
@@ -54,8 +54,11 @@ bun x tsc && cd -
 The included examples are:
 
 - [rectangle](../examples/rectangle): Really that's it, a little rectangle, but serves as a very basic example
-- [pong](../examples/pong): A simple pong implementation which uses text, movement, collisions, etc.
+![rectangle](./assets/rectangle.png)
+- [pong](../examples/pong): A simple pong implementation which uses text, movement, collisions.
+![pong](./assets/pong.png)
+- [snake](../examples/snake): Simplistic snake implementation, uses text, movement, collisions, time.
+![snake](./assets/snake.png)
 
 > [!NOTE]
-> I'll be adding more examples as the time goes, specially basic ones which serves as introduction since
-> pong is a little large considering we're coming from the rectangle one. PR's are also welcome.
+> I'll be adding more examples as the time goes, specially basic ones, PR's are welcome tho.

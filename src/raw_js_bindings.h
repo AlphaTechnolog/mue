@@ -25,6 +25,12 @@ static const char *collision_js =
     "};\n"
 ;
 
+static const char *time_js =
+    "var time = {\n"
+        "getTime: Mue_Time_GetTime,\n"
+    "}\n"
+;
+
 static const char *require_js =
     "var exports = {};\n"
     "function require(name) {\n"

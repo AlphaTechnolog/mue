@@ -278,7 +278,13 @@ void graphics_measure_text(js_State *J)
 {
     CHECK_ARGTYPE(1, string);
     CHECK_ARGTYPE(2, number);
-    js_pushnumber(J, (int)MeasureText(js_tostring(J, 1), (int)js_tonumber(J, 2)));
+    js_pushnumber(J, (double)MeasureText(js_tostring(J, 1), (int)js_tonumber(J, 2)));
+}
+
+// time.getTime(): number;
+void get_time(js_State *J)
+{
+    js_pushnumber(J, GetTime());
 }
 
 void global_functions(js_State *J)
@@ -293,11 +299,13 @@ void global_functions(js_State *J)
     EXPOSE(collision_get_collision_rec, "Mue_Collision_GetCollisionRec");
     EXPOSE(graphics_draw_text, "Mue_Graphics_DrawText");
     EXPOSE(graphics_measure_text, "Mue_Graphics_MeasureText");
+    EXPOSE(get_time, "Mue_Time_GetTime");
     js_dostring(J, console_js);
     js_dostring(J, stacktrace_js);
     js_dostring(J, require_js);
     js_dostring(J, graphics_js);
     js_dostring(J, input_js);
+    js_dostring(J, time_js);
     js_dostring(J, collision_js);
     js_dostring(J, raylib_enums_js);
 }
