@@ -1,7 +1,6 @@
 #!/usr/bin/env bun
 
-declare const Bun: any;
-declare const process: any;
+import "./globals.d";
 
 const [header] = process.argv.slice(2);
 if (!header) process.exit(1);
