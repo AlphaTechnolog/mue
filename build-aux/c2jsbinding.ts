@@ -1,5 +1,33 @@
 #!/usr/bin/env bun
 
+// usage: ./build-aux/c2jsbinding.ts <input>
+// example input file:
+// ```
+// struct Rectangle {
+//   double y
+//   double x
+//   double width
+//   double height
+// }
+//
+// struct Vec2d {
+//   double x
+//   double y
+// }
+//
+// struct Color {
+//   double r
+//   double g
+//   double b
+//   double a
+// }
+//
+// void DrawRectangle(Vec2d *pos, Rectangle *size, Color *color); // js_draw_rectangle
+// void InitWindow(int width, int height, char *title); // js_init_window
+// ```
+// This script will convert that spec into a valid c code to create a js binding for those functions
+// NOTE: Output may be very misleading, manual tweaking is still required.
+
 import "./globals.d";
 
 type SymbolInfo = {
@@ -134,7 +162,7 @@ function compileFuncInfo(structsIndex: StructIndex, funcInfo: FuncInfo): string 
     buffer += `\n    ${noPointer(datatype)} ${name} = {0};\n`;
     structDefinition.fields.forEach((field, index) => {
       const jsType = typemaps[field.datatype as keyof typeof typemaps];
-      buffer += `    js_getproperty(J, ${idx + 1}, ${field.name});\n`;
+      buffer += `    js_getproperty(J, ${idx + 1}, "${field.name}");\n`;
       buffer += `    ${name}.${field.name} = js_to${jsType}(J, -1);\n`;
       buffer += "    js_pop(J, 1);\n";
     });
